@@ -24,6 +24,6 @@ export class FormComponent implements OnInit {
   }
 
   save() {
-    this.service.save(this.id, this.label, this.genre, this.fsk);
+    this.service.save(this.id, this.label);
   }
 }

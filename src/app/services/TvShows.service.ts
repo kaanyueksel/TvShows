@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {TvShows} from '../modules/TvShows';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,12 +8,14 @@ import {TvShows} from '../modules/TvShows';
 export class TvShowsService {
 
   private shows: TvShows[] = [];
+  detailShow: TvShows;
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     this.shows.push(new TvShows(1, '4 BLOCKS'));
-    this.shows.push(new TvShows(1, 'Skylines'));
+    this.shows.push(new TvShows(1, 'Game Of Thrones'));
     this.shows.push(new TvShows(1, 'Prison Break'));
-    this.shows.push(new TvShows(1, 'Türkisch für Anfänger'));
+    this.shows.push(new TvShows(1, 'Naruto Shippuden'));
+    this.shows.push(new TvShows(1, 'Das Serien'));
   }
 
   get tvShows() {
@@ -24,5 +27,13 @@ export class TvShowsService {
   }
   save(id: number, label: string) {
     this.shows.push(new TvShows(id, label));
+  }
+
+  async detailInfo(show: TvShows) {
+    const data = await this.httpClient.get('http://api.tvmaze.com/singlesearch/shows?q=' + show.label).toPromise();
+    show.label = data['name'];
+    show.img = data['image']['medium'];
+    this.detailShow = show;
+    console.table(this.detailShow);
   }
 }

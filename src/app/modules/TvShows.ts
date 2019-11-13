@@ -1,6 +1,8 @@
 export class TvShows {
 
-  constructor(public id: number, public label: string) {
 
+  img: string;
+  constructor(public id: number, public label: string) {
+  this.img = null;
   }
 }

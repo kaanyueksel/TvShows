@@ -26,4 +26,8 @@ export class ListComponent implements OnInit {
   alert(tvShow: TvShows) {
     alert('Sie haben ' + tvShow.label + ' ausgewählt');
   }
+
+  detailInfo(show: TvShows) {
+    this.service.detailInfo(show);
+  }
 }
