@@ -1,0 +1,16 @@
+<h1>Serienliste</h1>
+
+<table class="table">
+  <thead class="thead-dark">
+  <th>ID</th>
+  <th>Bezeichnung</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let shows of tvShows" (click)="alert(shows)">
+    <td >{{shows.id}}</td>
+    <td>{{shows.label}}</td>
+    <td><button class="btn btn-danger" (click)="del(shows)">del</button></td>
+  </tr>
+  </tbody>
+</table>
