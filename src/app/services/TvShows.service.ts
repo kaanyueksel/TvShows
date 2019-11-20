@@ -11,11 +11,11 @@ export class TvShowsService {
   detailShow: TvShows;
 
   constructor(private httpClient: HttpClient) {
-    this.shows.push(new TvShows(1, '4 BLOCKS'));
-    this.shows.push(new TvShows(1, 'Game Of Thrones'));
-    this.shows.push(new TvShows(1, 'Prison Break'));
-    this.shows.push(new TvShows(1, 'Naruto Shippuden'));
-    this.shows.push(new TvShows(1, 'Das Serien'));
+    this.shows.push(new TvShows(1, 'Bulldogs'));
+    this.shows.push(new TvShows(2, 'Disjointed'));
+    this.shows.push(new TvShows(3, 'Atypical'));
+    this.shows.push(new TvShows(4, 'Blacklist'));
+    this.shows.push(new TvShows(5, 'Breaking Bad'));
   }
 
   get tvShows() {
@@ -25,8 +25,14 @@ export class TvShowsService {
   del(game: TvShows) {
     this.shows = this.shows.filter(t => t !== game);
   }
-  save(id: number, label: string) {
-    this.shows.push(new TvShows(id, label));
+  async save(id: number, label: string) {
+    try {
+      const data = await this.httpClient.get('http://api.tvmaze.com/singlesearch/shows?q=' + label).toPromise();label = data['name'];
+      show.label = data['name'];
+      this.shows.push(new TvShows(id, label));
+    } catch (e) {
+      alert('Falsche Eingabe!');
+    }
   }
 
   async detailInfo(show: TvShows) {

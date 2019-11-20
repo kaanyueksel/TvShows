@@ -11,9 +11,6 @@ export class FormComponent implements OnInit {
 
   public id: number;
   public label: string;
-  public genre: string;
-  public fsk: number;
-
 
 
   constructor(public service: TvShowsService) {
@@ -24,6 +21,6 @@ export class FormComponent implements OnInit {
   }
 
   save() {
-    this.service.save(this.id, this.label);
-  }
+      this.service.save(this.id, this.label);
+    }
 }
