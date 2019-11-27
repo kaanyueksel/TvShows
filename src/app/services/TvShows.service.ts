@@ -1,38 +1,40 @@
 import { Injectable } from '@angular/core';
 import {TvShows} from '../modules/TvShows';
 import {HttpClient} from '@angular/common/http';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TvShowsService {
 
-  private shows: TvShows[] = [];
+  private shows: Observable<any>;
   detailShow: TvShows;
 
-  constructor(private httpClient: HttpClient) {
-    this.shows.push(new TvShows(1, 'Bulldogs'));
-    this.shows.push(new TvShows(2, 'Disjointed'));
-    this.shows.push(new TvShows(3, 'Atypical'));
-    this.shows.push(new TvShows(4, 'Blacklist'));
-    this.shows.push(new TvShows(5, 'Breaking Bad'));
+  constructor(private httpClient: HttpClient, private af: AngularFirestore) {
+  this.shows = af.collection('shows').valueChanges({idField: 'id'});
   }
 
-  get tvShows() {
+  get tvShows(): Observable<TvShows[]> {
     return this.shows;
   }
 
-  del(game: TvShows) {
-    this.shows = this.shows.filter(t => t !== game);
+  del(show: TvShows) {
+    this.af.collection('shows').doc(show.id).delete();
+   // this.shows = this.shows.filter(t => t !== game);
   }
   async save(id: number, label: string) {
     try {
       const data = await this.httpClient.get('http://api.tvmaze.com/singlesearch/shows?q=' + label).toPromise();label = data['name'];
-      show.label = data['name'];
-      this.shows.push(new TvShows(id, label));
+      label = data['name'];
+      this.af.collection('shows').add({
+        label: label,
+      });
     } catch (e) {
       alert('Falsche Eingabe!');
     }
+
   }
 
   async detailInfo(show: TvShows) {

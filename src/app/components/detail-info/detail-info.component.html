@@ -1,3 +1,5 @@
-<h3>{{show.label}}</h3>
+<div *ngIf="show  !== undefined">
+  <h3>{{show.label}}</h3>
 
-<img [src]="show.img">
+  <img [src]="show.img">
+</div>
